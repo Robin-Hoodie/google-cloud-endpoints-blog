@@ -1,0 +1,49 @@
+defaultTasks 'clean', 'appengineRun'
+
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.google.appengine:gradle-appengine-plugin:+'
+  }
+}
+
+repositories {
+  maven {
+    url 'https://maven-central.storage.googleapis.com'
+  }
+  jcenter()
+  mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
+
+dependencies {
+  appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.+'
+  providedCompile 'javax.servlet:servlet-api:2.5'
+  compile 'com.google.appengine:appengine:+'
+  compile 'com.google.appengine:appengine-endpoints:1.+'
+}
+
+appengine {
+  downloadSdk = true;
+
+  appcfg {
+    noCookies = true;
+    oauth2 = true;
+  }
+
+  jvmFlags = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000'];
+  httpAddress = "0.0.0.0";
+}
+
+group = 'io.fourcast'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.7  // App Engine Standard uses Java 7
+targetCompatibility = 1.7  // App Engine Standard uses Java 7
